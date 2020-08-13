@@ -8,3 +8,14 @@ nuget Microsoft.AspNetCore.Components.WebAssembly.DevServer
 nuget Microsoft.AspNetCore.Components.WebAssembly.Server
 nuget System.Net.Http.Json
 nuget Confluent.Kafka
+
+nuget Serilog
+nuget Serilog.AspNetCore
+nuget Serilog.Enrichers.Environment
+nuget Serilog.Enrichers.Process
+nuget Serilog.Enrichers.Thread
+nuget Serilog.Exceptions
+nuget Serilog.Sinks.Async
+nuget Serilog.Sinks.Trace
+nuget Serilog.Sinks.Seq
+nuget Serilog.Formatting.Elasticsearch
