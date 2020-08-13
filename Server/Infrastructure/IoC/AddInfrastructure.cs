@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Threading.Channels;
 using Confluent.Kafka;
 using KafkaSimpleDashboard.Server.Infrastructure.Config;
+using KafkaSimpleDashboard.Server.Workers;
+using KafkaSimpleDashboard.Shared;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +22,9 @@ namespace KafkaSimpleDashboard.Server.Infrastructure.IoC
                 GroupId = cfg.GroupId,
                 AutoOffsetReset = AutoOffsetReset.Earliest
             });
+            services.Configure<KafkaSubscriptionConfig>(configuration.GetSection("Kafka"));
+            services.AddSingleton<Channel<KafkaMessage>>(_ => Channel.CreateUnbounded<KafkaMessage>());
+            services.AddHostedService<KafkaConsumer>();
             return services;
         }
     }
