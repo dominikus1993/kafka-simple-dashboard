@@ -2,6 +2,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.0.0
 MinimumVisualStudioVersion = 16.0.0.0
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{2D70ABA9-34D9-4556-820D-D4ED53877F06}"
+	ProjectSection(SolutionItems) = preProject
+		paket.dependencies = paket.dependencies
+	EndProjectSection
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KafkaSimpleDashboard.Server", "Server\KafkaSimpleDashboard.Server.csproj", "{4DBECCF3-E2C4-4AF0-89EF-42DD3F355235}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KafkaSimpleDashboard.Client", "Client\KafkaSimpleDashboard.Client.csproj", "{82E9EB39-269F-4AAD-AC68-1B505942F739}"
