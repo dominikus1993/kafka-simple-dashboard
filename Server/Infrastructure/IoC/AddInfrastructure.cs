@@ -13,7 +13,7 @@ namespace KafkaSimpleDashboard.Server.Infrastructure.IoC
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            var cfg = configuration.GetValue<KafkaConsumerConfig>("Kafka");
+            var cfg = configuration.GetSection("Kafka").Get<KafkaConsumerConfig>();
             services.AddSingleton<ConsumerConfig>(x => new ConsumerConfig
             {
                 SecurityProtocol = SecurityProtocol.Plaintext,
