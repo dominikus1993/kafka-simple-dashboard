@@ -6,6 +6,7 @@ nuget Microsoft.AspNetCore.Components.WebAssembly
 nuget Microsoft.AspNetCore.Components.WebAssembly.Build 
 nuget Microsoft.AspNetCore.Components.WebAssembly.DevServer
 nuget Microsoft.AspNetCore.Components.WebAssembly.Server
+nuget Microsoft.AspNetCore.SignalR.Client 
 nuget System.Net.Http.Json
 nuget Confluent.Kafka
 

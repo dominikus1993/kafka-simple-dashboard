@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 using KafkaSimpleDashboard.Server.Infrastructure.IoC;
+using KafkaSimpleDashboard.Server.Infrastructure.SignalR;
 using KafkaSimpleDashboard.Server.Logging;
 using Serilog;
 
@@ -26,7 +27,13 @@ namespace KafkaSimpleDashboard.Server
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddSignalR();
             services.AddControllersWithViews();
+            services.AddResponseCompression(opts =>
+            {
+                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                    new[] { "application/octet-stream" });
+            });
             services.AddRazorPages();
             services.AddInfrastructure(Configuration);
         }
@@ -45,6 +52,7 @@ namespace KafkaSimpleDashboard.Server
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseResponseCompression();
             
             app.UseSerilogRequestLogging(opts =>
             {
@@ -62,6 +70,7 @@ namespace KafkaSimpleDashboard.Server
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapHub<KafkaMessagesHub>("/kafkahub");
                 endpoints.MapFallbackToFile("index.html");
             });
         }
