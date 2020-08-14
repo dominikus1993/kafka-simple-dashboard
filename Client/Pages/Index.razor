@@ -20,31 +20,31 @@ Welcome to your new app.
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 @code {
-    private HubConnection hubConnection;
+    private HubConnection _hubConnection;
     private List<KafkaMessage> messages = new List<KafkaMessage>();
     private string userInput;
     private string messageInput;
 
     protected override async Task OnInitializedAsync()
     {
-        hubConnection = new HubConnectionBuilder()
+        _hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/kafkahub"))
             .Build();
 
-        hubConnection.On("ReceivedKafkaMessage", (KafkaMessage msg) =>
+        _hubConnection.On("ReceivedKafkaMessage", (KafkaMessage msg) =>
         {
             messages.Add(msg);
             StateHasChanged();
         });
 
-        await hubConnection.StartAsync();
+        await _hubConnection.StartAsync();
     }
     
     public bool IsConnected =>
-        hubConnection.State == HubConnectionState.Connected;
+        _hubConnection.State == HubConnectionState.Connected;
         
     public void Dispose()
     {
-        _ = hubConnection.DisposeAsync();
+        _ = _hubConnection.DisposeAsync();
     }
 }
