@@ -6,18 +6,34 @@
 
 <h1>Hello, world!</h1>
 
-<ul id="messagesList">
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">ConsumedAt</th>
+        <th scope="col">Topic</th>
+        <th scope="col">Message</th>
+    </tr>
+    </thead>
+    <tbody>
+
     @foreach (var message in messages)
     {
-        <li>@message</li>
+        <tr>
+            <th scope="row">@message.Id</th>
+            <td>@message.ConsumedAt.ToLocalTime()</td>
+            <td>@message.Topic</td>
+            <td>@message.Body</td>
+        </tr>
     }
-</ul>
-
+    </tbody>
+</table>
 
 
 Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<SurveyPrompt Title="How is Blazor working for you?"/>
 
 @code {
     private HubConnection _hubConnection;
@@ -39,12 +55,13 @@ Welcome to your new app.
 
         await _hubConnection.StartAsync();
     }
-    
+
     public bool IsConnected =>
         _hubConnection.State == HubConnectionState.Connected;
-        
+
     public void Dispose()
     {
         _ = _hubConnection.DisposeAsync();
     }
+
 }
