@@ -57,7 +57,9 @@ namespace KafkaSimpleDashboard.Server.Workers
                         await _channel.Writer.WriteAsync(new KafkaMessage
                         {
                             Topic = cr.Topic,
-                            Body = cr.Message.Value
+                            Body = cr.Message.Value,
+                            Id = Guid.NewGuid(),
+                            ConsumedAt = DateTime.UtcNow
                         }, stoppingToken);
                     }
                     catch (ConsumeException e)
