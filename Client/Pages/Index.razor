@@ -4,7 +4,15 @@
 @inject NavigationManager NavigationManager
 @implements IDisposable
 
-<h1>Hello, world!</h1>
+@if (IsConnected)
+{
+    <span class="badge badge-pill badge-success">Połączono</span>
+}
+
+@if (!IsConnected)
+{
+    <span class="badge badge-pill badge-danger">Połączenie zerwane</span>
+}
 
 
 <table class="table table-striped">
@@ -38,9 +46,6 @@ Welcome to your new app.
 @code {
     private HubConnection _hubConnection;
     private List<KafkaMessage> messages = new List<KafkaMessage>();
-    private string userInput;
-    private string messageInput;
-
     protected override async Task OnInitializedAsync()
     {
         _hubConnection = new HubConnectionBuilder()
