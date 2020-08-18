@@ -11,11 +11,11 @@ namespace KafkaSimpleDashboard.Server.Workers
 {
     public class SigalRPublisher: BackgroundService
     {
-        private Channel<KafkaMessage> _channel;
+        private Channel<ConsumedKafkaMessage> _channel;
         private ILogger<SigalRPublisher> _logger;
         private IHubContext<KafkaMessagesHub> _hubContext;
 
-        public SigalRPublisher(Channel<KafkaMessage> channel, IHubContext<KafkaMessagesHub> hubContext, ILogger<SigalRPublisher> logger)
+        public SigalRPublisher(Channel<ConsumedKafkaMessage> channel, IHubContext<KafkaMessagesHub> hubContext, ILogger<SigalRPublisher> logger)
         {
             _channel = channel;
             _logger = logger;

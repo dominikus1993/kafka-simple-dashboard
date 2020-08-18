@@ -23,7 +23,7 @@ namespace KafkaSimpleDashboard.Server.Infrastructure.IoC
                 AutoOffsetReset = AutoOffsetReset.Earliest
             });
             services.Configure<KafkaSubscriptionConfig>(configuration.GetSection("Kafka"));
-            services.AddSingleton<Channel<KafkaMessage>>(_ => Channel.CreateUnbounded<KafkaMessage>());
+            services.AddSingleton<Channel<ConsumedKafkaMessage>>(_ => Channel.CreateUnbounded<ConsumedKafkaMessage>());
             services.AddHostedService<KafkaConsumer>();
             services.AddHostedService<SigalRPublisher>();
             return services;

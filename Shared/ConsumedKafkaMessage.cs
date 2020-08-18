@@ -2,7 +2,12 @@
 
 namespace KafkaSimpleDashboard.Shared
 {
-    public class KafkaMessage
+    public interface IKafkaMessage
+    {
+        
+    }
+
+    public class ConsumedKafkaMessage : IKafkaMessage
     {
         public string Body { get; set; }
         public string Topic { get; set; }

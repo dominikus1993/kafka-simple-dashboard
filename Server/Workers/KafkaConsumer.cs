@@ -18,10 +18,10 @@ namespace KafkaSimpleDashboard.Server.Workers
         private readonly ConsumerConfig _consumerConfig;
         private readonly IList<KafkaSubscription> _kafkaSubscriptions;
         private readonly ILogger<KafkaConsumer> _logger;
-        private readonly Channel<KafkaMessage> _channel;
+        private readonly Channel<ConsumedKafkaMessage> _channel;
 
         public KafkaConsumer(ConsumerConfig consumerConfig, IOptions<KafkaSubscriptionConfig> config,
-            ILogger<KafkaConsumer> logger, Channel<KafkaMessage> channel)
+            ILogger<KafkaConsumer> logger, Channel<ConsumedKafkaMessage> channel)
         {
             _consumerConfig = consumerConfig;
             _kafkaSubscriptions = config.Value.Subscriptions;
@@ -54,7 +54,7 @@ namespace KafkaSimpleDashboard.Server.Workers
                     try
                     {
                         var cr = consumer.Consume(stoppingToken);
-                        await _channel.Writer.WriteAsync(new KafkaMessage
+                        await _channel.Writer.WriteAsync(new ConsumedKafkaMessage
                         {
                             Topic = cr.Topic,
                             Body = cr.Message.Value,

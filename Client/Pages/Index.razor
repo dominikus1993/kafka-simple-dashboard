@@ -45,14 +45,14 @@ Welcome to your new app.
 
 @code {
     private HubConnection _hubConnection;
-    private List<KafkaMessage> messages = new List<KafkaMessage>();
+    private List<ConsumedKafkaMessage> messages = new List<ConsumedKafkaMessage>();
     protected override async Task OnInitializedAsync()
     {
         _hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/kafkahub"))
             .Build();
 
-        _hubConnection.On("ReceivedKafkaMessage", (KafkaMessage msg) =>
+        _hubConnection.On("ReceivedKafkaMessage", (ConsumedKafkaMessage msg) =>
         {
             messages.Add(msg);
             StateHasChanged();
