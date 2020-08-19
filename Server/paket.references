@@ -1,6 +1,6 @@
 Microsoft.AspNetCore.Components.WebAssembly.Server
 Confluent.Kafka
-Proto.Actor
+LanguageExt.Core
 
 Serilog
 Serilog.AspNetCore

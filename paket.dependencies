@@ -10,7 +10,7 @@ nuget Microsoft.AspNetCore.SignalR.Client
 nuget System.Net.Http.Json
 nuget Confluent.Kafka
 
-nuget Proto.Actor
+nuget LanguageExt.Core
 nuget Serilog
 nuget Serilog.AspNetCore
 nuget Serilog.Enrichers.Environment
