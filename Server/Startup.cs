@@ -8,6 +8,8 @@ using System.Linq;
 using KafkaSimpleDashboard.Server.Infrastructure.IoC;
 using KafkaSimpleDashboard.Server.Infrastructure.SignalR;
 using KafkaSimpleDashboard.Server.Logging;
+using KafkaSimpleDashboard.Server.Services.Abstractions;
+using KafkaSimpleDashboard.Server.Services.Implementations;
 using Serilog;
 
 namespace KafkaSimpleDashboard.Server

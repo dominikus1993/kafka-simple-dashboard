@@ -7,6 +7,6 @@ namespace KafkaSimpleDashboard.Server.Services.Abstractions
 {
     public interface IKafkaTopicsAdminService
     {
-        Task<Option<IList<KafkaTopic>>> GetAll();
+        ValueTask<Option<List<KafkaTopic>>> GetAll();
     }
 }
