@@ -30,11 +30,25 @@ namespace KafkaSimpleDashboard.Server.Infrastructure.IoC
                 ClientId = cfg.ClientId,
                 BootstrapServers = cfg.KafkaBrokers,
             });
+
+            services.AddSingleton<ProducerConfig>(sp => new ProducerConfig()
+            {
+                SecurityProtocol = SecurityProtocol.Plaintext,
+                ClientId = cfg.ClientId,
+                BootstrapServers = cfg.KafkaBrokers,
+            });
+            services.AddSingleton<ProducerBuilder<Null, string>>(sp => new ProducerBuilder<Null, string>(sp.GetService<ProducerConfig>()));
+            services.AddScoped<IProducer<Null, string>>(sp =>
+            {
+                var builder = sp.GetService<ProducerBuilder<Null, string>>();
+                return builder.Build();
+            });
             services.Configure<KafkaSubscriptionConfig>(configuration.GetSection("Kafka"));
             services.AddSingleton<Channel<ConsumedKafkaMessage>>(_ => Channel.CreateUnbounded<ConsumedKafkaMessage>());
             services.AddHostedService<KafkaConsumer>();
             services.AddHostedService<SigalRPublisher>();
             services.AddScoped<IKafkaTopicsAdminService, ConfluentKafkaTopicsAdminService>();
+            services.AddScoped<IMessagePublisher, KafkaMessagePublisher>();
             return services;
         }
     }

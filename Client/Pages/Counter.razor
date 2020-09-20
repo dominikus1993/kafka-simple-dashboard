@@ -1,16 +1,31 @@
 ﻿@page "/counter"
+@using KafkaSimpleDashboard.Shared
+@inject HttpClient Http
 
-<h1>Counter</h1>
+<h1>Publish Message</h1>
 
-<p>Current count: @currentCount</p>
+<div class="input-group mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">Topic</span>
+    </div>
+    <input type="text" class="form-control" @bind="topic" placeholder="topic" aria-label="topic" aria-describedby="basic-addon1">
+</div>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Body</span>
+    </div>
+    <textarea class="form-control" @bind="body" aria-label="With textarea"></textarea>
+</div>
+
+<button @onclick="HandleSubmit">Publish</button>
 
 @code {
-    private int currentCount = 0;
+    private string topic = "";
+    private string body = "";
 
-    private void IncrementCount()
+    private async Task HandleSubmit()
     {
-        currentCount++;
+        await Http.PutAsJsonAsync("KafkaMessages", new KafkaMessage() { Body = body, Topic = topic });
     }
 }
