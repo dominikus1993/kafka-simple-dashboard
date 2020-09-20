@@ -45,7 +45,9 @@ namespace KafkaSimpleDashboard.Server.Infrastructure.IoC
             });
             services.Configure<KafkaSubscriptionConfig>(configuration.GetSection("Kafka"));
             services.AddSingleton<Channel<ConsumedKafkaMessage>>(_ => Channel.CreateUnbounded<ConsumedKafkaMessage>());
+            services.AddSingleton<Channel<KafkaMessage>>(_ => Channel.CreateUnbounded<KafkaMessage>());
             services.AddHostedService<KafkaConsumer>();
+            services.AddHostedService<KafkaProducer>();
             services.AddHostedService<SigalRPublisher>();
             services.AddScoped<IKafkaTopicsAdminService, ConfluentKafkaTopicsAdminService>();
             services.AddScoped<IMessagePublisher, KafkaMessagePublisher>();

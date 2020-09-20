@@ -22,7 +22,6 @@ namespace KafkaSimpleDashboard.Server.Controllers
         public async Task<IActionResult> Publish([FromBody] KafkaMessage msg)
         {
             await _messagePublisher.Publish(msg);
-            _logger.LogInformation("Message Published {Msg}", msg);
             return Ok();
         }
     }

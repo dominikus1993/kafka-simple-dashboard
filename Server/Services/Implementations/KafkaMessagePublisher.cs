@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using Confluent.Kafka;
+﻿using System.Threading.Channels;
+using System.Threading.Tasks;
 using KafkaSimpleDashboard.Server.Services.Abstractions;
 using KafkaSimpleDashboard.Shared;
 
@@ -7,16 +7,17 @@ namespace KafkaSimpleDashboard.Server.Services.Implementations
 {
     public class KafkaMessagePublisher : IMessagePublisher
     {
-        private readonly IProducer<Null, string> _producer;
+        private readonly Channel<KafkaMessage> _channel;
 
-        public KafkaMessagePublisher(IProducer<Null, string> producer)
+        public KafkaMessagePublisher(Channel<KafkaMessage> channel)
         {
-            _producer = producer;
+            _channel = channel;
         }
+
 
         public async Task Publish(KafkaMessage message)
         {
-            await _producer.ProduceAsync(message.Topic, new Message<Null, string>() {Value = message.Body});
+            await _channel.Writer.WriteAsync(message);
         }
     }
 }
