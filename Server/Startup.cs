@@ -16,12 +16,17 @@ namespace KafkaSimpleDashboard.Server
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public const string PathBaseEnviromentVariable = "PATH_BASE";
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
+        public string PathBase => Configuration[PathBaseEnviromentVariable] ?? string.Empty;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -42,6 +47,12 @@ namespace KafkaSimpleDashboard.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            if (!string.IsNullOrEmpty(PathBase))
+            {
+                Log.Logger.Information($"Set BasePath {PathBase}");
+                app.UsePathBase(PathBase);
+            }
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
