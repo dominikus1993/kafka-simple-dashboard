@@ -8,7 +8,7 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E03280
 && apt-get update && apt-get install -y mono-devel default-jre build-essential libssl-dev libsasl2-2 libsasl2-dev libsasl2-modules-gssapi-mit wget unzip
 
 # Build librdkafka
-ARG LIBRDKAFKA_VER=1.5.0
+ARG LIBRDKAFKA_VER=1.5.2
 RUN curl -k -L -s https://github.com/edenhill/librdkafka/archive/v${LIBRDKAFKA_VER}.zip -o ./librdkafka.zip
 
 RUN ls -l && cd / && unzip librdkafka.zip && \
