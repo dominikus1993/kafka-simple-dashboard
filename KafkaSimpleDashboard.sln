@@ -6,6 +6,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{2D70AB
 	ProjectSection(SolutionItems) = preProject
 		paket.dependencies = paket.dependencies
 		docker-compose.infra.yml = docker-compose.infra.yml
+		global.json = global.json
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KafkaSimpleDashboard.Server", "Server\KafkaSimpleDashboard.Server.csproj", "{4DBECCF3-E2C4-4AF0-89EF-42DD3F355235}"
