@@ -23,12 +23,14 @@ namespace KafkaSimpleDashboard.Server.Workers
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            _logger.LogInformation("KafkaProducer Started");
             using var producer = new ProducerBuilder<Null, string>(_config).Build();
             await foreach (var msg in _channel.Reader.ReadAllAsync(stoppingToken))
             {
-                await producer.ProduceAsync(msg.Topic, new Message<Null, string>() {Value = msg.Body}, stoppingToken);
-                _logger.LogInformation("Message Published {Msg}", msg);
+                await producer.ProduceAsync(msg.Topic, new Message<Null, string> {Value = msg.Body}, stoppingToken);
+                _logger.LogDebug("Message Published {Msg}", msg);
             }
+            _logger.LogInformation("KafkaProducer Stopped");
         }
     }
 }

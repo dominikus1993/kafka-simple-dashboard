@@ -8,7 +8,7 @@ namespace KafkaSimpleDashboard.Server
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).RunApp();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

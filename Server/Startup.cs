@@ -49,7 +49,7 @@ namespace KafkaSimpleDashboard.Server
         {
             if (!string.IsNullOrEmpty(PathBase))
             {
-                Log.Logger.Information($"Set BasePath {PathBase}");
+                Log.Logger.Information("Set BasePath {PathBase}", PathBase);
                 app.UsePathBase(PathBase);
             }
             

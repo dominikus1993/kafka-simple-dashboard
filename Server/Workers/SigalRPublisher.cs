@@ -24,11 +24,13 @@ namespace KafkaSimpleDashboard.Server.Workers
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            _logger.LogInformation("SigalRPublisher Started");
             await foreach (var msg in _channel.Reader.ReadAllAsync(stoppingToken))
             {
-                _logger.LogInformation("Message received, {Msg}", msg);
+                _logger.LogDebug("Message received, {Msg}", msg);
                 await _hubContext.Clients.All.SendAsync("ReceivedKafkaMessage", msg, cancellationToken: stoppingToken);
             }
+            _logger.LogInformation("SigalRPublisher Stopped");
         }
     }
 }

@@ -11,9 +11,38 @@ using Serilog.Sinks.SystemConsole.Themes;
 
 namespace KafkaSimpleDashboard.Server.Logging
 {
-        public static class RequestLogging
+    
+    public static class HostBuilderExtensions
     {
-        public static LogEventLevel CustomGetLevel(HttpContext ctx, double _, Exception ex) =>
+        public static void RunApp(this IHostBuilder builder)
+        {
+            try
+            {
+                using IHost host = builder.Build();
+                host.Run();
+            }
+            catch (Exception ex)
+            {
+                // Log.Logger will likely be internal type "Serilog.Core.Pipeline.SilentLogger".
+                if (Log.Logger == null || Log.Logger.GetType().Name == "SilentLogger")
+                {
+                    Log.Logger = new LoggerConfiguration()
+                        .MinimumLevel.Debug()
+                        .WriteTo.Console(new CompactJsonFormatter())
+                        .CreateBootstrapLogger();
+                }
+
+                Log.Fatal(ex, "Host terminated unexpectedly");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
+        }
+    }
+    public static class RequestLogging
+    {
+        public static LogEventLevel CustomGetLevel(HttpContext ctx, double _, Exception? ex) =>
             ex != null
                 ? LogEventLevel.Error
                 : ctx.Response.StatusCode > 499
@@ -35,7 +64,7 @@ namespace KafkaSimpleDashboard.Server.Logging
             return false;
         }
 
-        public static LogEventLevel ExcludeHealthChecks(HttpContext ctx, double _, Exception ex) =>
+        public static LogEventLevel ExcludeHealthChecks(HttpContext ctx, double _, Exception? ex) =>
             ex != null
                 ? LogEventLevel.Error
                 : ctx.Response.StatusCode > 499
@@ -65,7 +94,7 @@ namespace KafkaSimpleDashboard.Server.Logging
             }
         }
     }
-        
+
     public static class Extensions
     {
         private static TModel GetOptions<TModel>(this IConfiguration configuration, string section) where TModel : new()
@@ -75,7 +104,7 @@ namespace KafkaSimpleDashboard.Server.Logging
             return model;
         }
 
-        public static IHostBuilder UseLogger(this IHostBuilder hostBuilder, string applicationName = null)
+        public static IHostBuilder UseLogger(this IHostBuilder hostBuilder, string? applicationName = null)
         {
             return hostBuilder.UseSerilog(((context, configuration) =>
             {
@@ -87,6 +116,8 @@ namespace KafkaSimpleDashboard.Server.Logging
 
                 var conf = configuration
                     .MinimumLevel.Is(level)
+                    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                    .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
                     .Enrich.FromLogContext()
                     .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
                     .Enrich.WithProperty("ApplicationName", applicationName)
