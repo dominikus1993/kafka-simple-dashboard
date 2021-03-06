@@ -131,17 +131,17 @@ namespace KafkaSimpleDashboard.Server.Logging
                 {
                     if (serilogOptions.ConsoleEnabled)
                     {
-                        if (serilogOptions.Format.ToLower() == "elasticsearch")
+                        switch (serilogOptions.Format.ToLower())
                         {
-                            logger.Console(new ElasticsearchJsonFormatter());
-                        }
-                        else if (serilogOptions.Format.ToLower() == "compact")
-                        {
-                            logger.Console(new CompactJsonFormatter());
-                        }
-                        else if (serilogOptions.Format.ToLower() == "colored")
-                        {
-                            logger.Console(theme: AnsiConsoleTheme.Code);
+                            case "elasticsearch":
+                                logger.Console(new ElasticsearchJsonFormatter());
+                                break;
+                            case "compact":
+                                logger.Console(new CompactJsonFormatter());
+                                break;
+                            case "colored":
+                                logger.Console(theme: AnsiConsoleTheme.Code);
+                                break;
                         }
                     }
 
