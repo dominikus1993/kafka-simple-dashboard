@@ -1,6 +1,7 @@
 Microsoft.AspNetCore.Components.WebAssembly.Server
 Confluent.Kafka
 LanguageExt.Core
+AspNetCore.HealthChecks.UI.Client
 
 Serilog
 Serilog.AspNetCore

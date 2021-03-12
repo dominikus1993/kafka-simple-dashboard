@@ -5,11 +5,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+using System.Threading.Tasks;
+using HealthChecks.UI.Client;
 using KafkaSimpleDashboard.Server.Infrastructure.IoC;
 using KafkaSimpleDashboard.Server.Infrastructure.SignalR;
 using KafkaSimpleDashboard.Server.Logging;
 using KafkaSimpleDashboard.Server.Services.Abstractions;
 using KafkaSimpleDashboard.Server.Services.Implementations;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
 
 namespace KafkaSimpleDashboard.Server
@@ -42,6 +47,7 @@ namespace KafkaSimpleDashboard.Server
             });
             services.AddRazorPages();
             services.AddInfrastructure(Configuration);
+            services.AddHealthChecks();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,9 +88,26 @@ namespace KafkaSimpleDashboard.Server
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+                endpoints.MapHealthChecks("/ping", new HealthCheckOptions()
+                {
+                    Predicate = r => r.Name.Contains("self"),
+                    ResponseWriter = PongWriteResponse,
+                });
                 endpoints.MapHub<KafkaMessagesHub>("/kafkahub");
                 endpoints.MapFallbackToFile("index.html");
             });
+        }
+        
+        private static Task PongWriteResponse(HttpContext httpContext,
+            HealthReport result)
+        {
+            httpContext.Response.ContentType = "application/json";
+            return httpContext.Response.WriteAsync("pong");
         }
     }
 }

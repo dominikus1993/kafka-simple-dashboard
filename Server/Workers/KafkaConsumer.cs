@@ -47,6 +47,7 @@ namespace KafkaSimpleDashboard.Server.Workers
             _logger.LogInformation("KafkaConsumer Started");
             while (!stoppingToken.IsCancellationRequested)
             {
+                await Task.Yield();
                 try
                 {
                     var cr = _consumer.Consume(stoppingToken);
