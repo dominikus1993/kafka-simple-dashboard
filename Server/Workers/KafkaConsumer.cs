@@ -78,8 +78,8 @@ namespace KafkaSimpleDashboard.Server.Workers
                     _logger.LogError(e, "Unexpected error");
                     break;
                 }
-                _logger.LogInformation("KafkaConsumer Stopped");
             }
+            _logger.LogInformation("KafkaConsumer Stopped");
         }
 
 
